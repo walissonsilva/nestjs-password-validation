@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IsString } from 'class-validator';
-import { PasswordValidator } from 'src/validators/PasswordValidator/PasswordValidator';
+import { PasswordValidator } from '../validators/PasswordValidator/PasswordValidator';
 
 export class ValidatePasswordInputDTO {
   @IsString()
