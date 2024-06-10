@@ -12,7 +12,7 @@
     - [Implementação do Validador](#implementação-do-validador)
 - [Contato](#contato)
 
-Este projeto consiste em uma API REST desenvolvida utilizando Nest.js e TypeScript. A API expõe um endpoint para validar se a senha do usuário corresponde a determinados critérios.
+Este projeto consiste em uma API REST desenvolvida utilizando NestJS e TypeScript. A API expõe um endpoint para validar se a senha do usuário corresponde a determinados critérios.
 
 ## Funcionalidades
 
@@ -61,7 +61,7 @@ isValid('AbTp9!fok'); // true
 
 Abaixo são elencadas as principais tecnologias que foram utilizadas no projeto:
 
-- Nest.js
+- NestJS
 - TypeScript
 - `@nestjs/testing` e `jest`: ferramentas de _test runner_.
 
