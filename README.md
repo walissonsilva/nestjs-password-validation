@@ -1,73 +1,145 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# API para Validação de Senha
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- [Funcionalidades](#funcionalidades)
+  - [Requisitos da Senha](#requisitos-da-senha)
+    - [Exemplos](#exemplos)
+  - [Tecnologias Utilizadas](#tecnologias-utilizadas)
+  - [Como Executar o Projeto?](#como-executar-o-projeto)
+    - [Pré-requisitos](#pré-requisitos)
+    - [Passos para Execução do Projeto](#passos-para-execução-do-projeto)
+    - [Execução dos Testes](#execução-dos-testes)
+  - [Decisões Técnicas do Projeto](#decisões-técnicas)
+    - [Implementação do Validador](#implementação-do-validador)
+- [Contato](#contato)
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este projeto consiste em uma API REST desenvolvida utilizando Nest.js e TypeScript. A API expõe um endpoint para validar se a senha do usuário corresponde a determinados critérios.
 
-## Description
+## Funcionalidades
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A API dispõe de um único endpoint, que verifica se uma senha é válida de acordo com critérios específicos.
 
-## Installation
+- URL: `/validate/password`
+- Método: `POST`
+- Input: o body da requisição deve seguir a interface abaixo.
+  ```typescript
+  {
+    "password": string
+  }
+  ```
+- Output:
+  ```typescript
+  true / false;
+  ```
 
-```bash
-$ yarn install
+## Requisitos da Senha
+
+Uma senha é considerada válida se atender aos seguintes critérios:
+
+- Contém nove ou mais caracteres.
+- Contém pelo menos 1 dígito.
+- Contém pelo menos 1 letra minúscula.
+- Contém pelo menos 1 letra maiúscula.
+- Contém pelo menos 1 caractere especial (`!@#$%^&*()-+`).
+- Não contém caracteres repetidos.
+
+> Espaços em branco não são considerados caracteres válidos.
+
+### Exemplos
+
+```javascript
+isValid(''); // false
+isValid('aa'); // false
+isValid('ab'); // false
+isValid('AAAbbbCc'); // false
+isValid('AbTp9!foo'); // false
+isValid('AbTp9!foA'); // false
+isValid('AbTp9 fok'); // false
+isValid('AbTp9!fok'); // true
 ```
 
-## Running the app
+## Tecnologias Utilizadas
+
+Abaixo são elencadas as principais tecnologias que foram utilizadas no projeto:
+
+- Nest.js
+- TypeScript
+- `@nestjs/testing` e `jest`: ferramentas de _test runner_.
+
+## Como Executar o Projeto?
+
+### Pré-requisitos
+
+É necessário que as ferramentas elencadas abaixo estejam devidamente instaladas em sua máquina:
+
+- Node.js (versão 14 ou superior)
+- npm (versão 6 ou superior)
+- yarn (versão 1)
+
+### Passos para Execução do Projeto
+
+1. Clone o repositório e acesse a pasta do projeto:
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+git clone https://github.com/walissonsilva/nestjs-password-validation.git
+cd nestjs-password-validation
 ```
 
-## Test
+2. Instale as dependências:
 
 ```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
+yarn install
 ```
 
-## Support
+3. Execute o servidor:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+yarn start:dev
+```
 
-## Stay in touch
+O comando acima executa o servidor em modo de desenvolvimento. Alternativamente, você pode prefirir build o projeto antes de executá-lo. Nesse caso, utilize o comando:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+yarn build && yarn start:prod
+```
 
-## License
+### Execução dos Testes
 
-Nest is [MIT licensed](LICENSE).
+Para rodar todos os testes da aplicação, utilize o comando:
+
+```bash
+yarn test
+```
+
+## Decisões Técnicas do Projeto
+
+### Implementação do Validador
+
+Embora tenha sido solicitado o desenvolvimento de um endpoint apenas para a validação de senha, eu optei por tentar criar uma solução que fosse capaz de abstrair um validador genérico e que, a partir dele, fosse possível criar um validador de senhas que validasse as regras que foram especificadas no documento do problema.
+
+Essa implementação do validador foi feita utilizando os princípios do SOLID, a fim de favorecer essa abstração e tornar o código mais extensível e com baixo acoplamento.
+
+Essa abstração iniciou com a criação da interface `IValidationRule` que consiste em um contrato para a implementação de uma classe que represente uma regra de validação. Com base nessa interface, foi criada uma classe abstrata, `ValidationRule`, para que as regras de validação fossem criadas extendendo desta classe (herança), exigindo que haja um método `validate` que retorna um booleano, indicando se a validação passou (`true`) ou não (`false`).
+
+Com isso, foram criadas as regras de validação da senha, as quais estão no arquivo `PasswordRules.ts`. Para exemplificar, na classe `LowerCaseRule`, o método `validate` retorna `true` caso exista, pelo menos, um caractere que corresponda a uma letra minúscula.
+
+> 💡 Apesar de todas as classes das regras de validação da senha terem sido criadas com nomes intuitivos (significativos), foi também adicionada uma documentação ao método `validate` de cada uma delas, a fim de melhorar a experiência de desenvolvimento.
+
+Com a implementação da interface do `ValidationRule` também foi possível criar um validador genérico, o `BaseValidator` (arquivo `BaseValidator.ts`). Ele consiste em uma classe cujo construtor recebe um array de `ValidationRule`, correspondendo às regras que deverão ser validadas por ele. Além disso, o `BaseValidator` possui o método `validate`, o qual combina todas as regras que foram passadas no construtor; ele retorna `true`, se todas as regras retornam `true`, e `false`, caso contrário.
+
+> 💡 O método `validate` do `BaseValidate` também foi documentado.
+
+Com o `BaseValidator` ficou simples criar o `PasswordValidator` e, para isso, foi necessário apenas utilizar o conceito de herança (veja o arquivo `PasswordValidator.ts`). Além disso, será fácil criar qualquer outro validador, com suas próprias regras, apenas utilizando a interface do `ValidationRule` e o próprio `BaseValidator`.
+
+#### O que acontece quando é passado um array vazio de regras (`ValidationRule`)?
+
+Nesse caso, como não existe nenhuma regra definida, o validador retornará sempre `true` para qualquer input que for fornecido.
+
+> 🧪 Observe os testes que foram desenvolvidos no arquivo `BaseValidator.test.ts`.
+
+# Contato
+
+Qualquer dúvida, entre em contato:
+
+- [LinkedIn](https://www.linkedin.com/in/walissonsilva/)
+- Email: [walissonsilva.dev@gmail.com](mailto:walissonsilva.dev@gmail.com) | [walissonsilva.me@gmail.com](mailto:walissonsilva.me@gmail.com)
+- WhatsApp: (11) 9 5787-2138
